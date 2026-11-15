@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Engineering Digest · 9–15 ноября 2026</title>
+<meta name="description" content="Исследования, отчёты, инженерные разборы, руководства и инструменты для backend-инженера, работающего с AI-агентами.">
+<style>
+:root{--bg:#0f1216;--panel:#171b21;--panel2:#1d222a;--line:#2a313b;--text:#e7ebf0;--muted:#a3adba;--acc:#7cc4a4;--acc2:#e3b866;--radius:16px;--gutter:22px;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+a{color:var(--acc)}a:hover{color:#a6e0c4}
+.wrap{max-width:860px;margin-inline:auto;padding-inline:var(--gutter)}
+nav{position:sticky;top:0;z-index:20;background:rgba(15,18,22,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:860px;margin-inline:auto;padding-inline:var(--gutter);display:flex;align-items:center;gap:14px;min-height:56px}
+.brand{font-weight:700;white-space:nowrap}
+.nav-links{display:flex;gap:4px;overflow-x:auto;min-width:0;-webkit-overflow-scrolling:touch;margin-left:auto}
+.nav-links a{color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:10px;white-space:nowrap;font-size:15px}
+.nav-links a:hover{background:var(--panel);color:var(--text)}
+.hero{padding-top:56px;padding-bottom:36px}
+.eyebrow{color:var(--acc2);font-size:14px;letter-spacing:.06em;text-transform:uppercase;margin:0}
+.hero h1{font-size:44px;line-height:1.1;margin:12px 0 16px}
+.lead{font-size:18px;color:#cfd6df;margin:0}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-top:28px}
+.box h2{font-size:22px;margin:0 0 14px}
+.top5{margin:0;padding-left:22px}.top5 li{margin:0 0 12px}.top5 a{font-weight:600;display:block}.top5 span{color:var(--muted);font-size:16px}
+.toc{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:6px 18px}
+.toc b{color:var(--acc2);font-weight:600}
+.tools-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:16px}
+.flt,.reset{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font:inherit;font-size:15px;cursor:pointer;min-height:44px}
+.flt.on{background:var(--acc);color:#0f1216;border-color:var(--acc)}
+.search{flex:1 1 220px;min-width:0;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font:inherit;font-size:16px;min-height:44px}
+.found{color:var(--muted);font-size:15px;margin:10px 0 0}
+.empty{display:none;color:var(--acc2);margin-top:10px}
+section.sec{padding-top:56px;padding-bottom:20px;scroll-margin-top:70px;border-top:1px solid rgba(255,255,255,.06)}
+.shead{display:flex;align-items:baseline;gap:12px;margin-bottom:22px}.shead h2{font-size:28px;margin:0}.count{color:var(--acc2);font-weight:700}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin:0 0 22px;scroll-margin-top:76px}
+.card h3{font-size:22px;line-height:1.3;margin:0 0 6px}.card h3 a{color:var(--text);text-decoration:none}.card h3 a:hover{color:var(--acc)}
+.card p{margin:0 0 12px}
+.card .meta{color:var(--muted);font-size:15px;margin:0 0 4px}
+.card .orig{color:#8792a0;font-size:15px;font-style:italic;margin:0 0 10px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}.tag{background:var(--panel2);border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:2px 10px;font-size:13px}
+.fig{margin:6px 0 14px}
+.shot{position:relative;margin-inline:auto;background:#fff;border-radius:10px;overflow:hidden;cursor:zoom-in}
+.shot img{width:auto;max-width:100%;height:auto;display:block;margin-inline:auto}
+.figbar{display:flex;justify-content:flex-end;margin-top:6px}.lbbtn{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:rgba(15,18,22,.85);color:var(--text);font-size:20px;cursor:pointer}
+figcaption{color:var(--muted);font-size:15px;margin-top:8px}
+details{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:4px 16px;margin:4px 0 14px}
+summary{cursor:pointer;padding:10px 0;color:var(--acc);font-weight:600}
+dl{margin:4px 0 12px}dt{font-weight:700;margin-top:12px;color:var(--acc2);font-size:15px}dd{margin:4px 0 0}
+.links{display:flex;flex-wrap:wrap;gap:8px}.src{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:10px;padding:6px 12px;text-decoration:none;font-size:15px}
+.plan{margin:0;padding-left:22px}.plan li{margin-bottom:10px}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:15px;padding-top:30px;padding-bottom:50px;max-width:860px;margin-inline:auto;padding-inline:var(--gutter)}
+#lb{position:fixed;inset:0;z-index:50;background:rgba(5,7,9,.97);display:none;align-items:center;justify-content:center;padding:24px}
+#lb.open{display:flex}
+#lb .lbinner{width:100%;margin-inline:auto;background:#fff;border-radius:10px;overflow:auto;max-height:calc(100vh - 100px)}
+#lb img{display:block;width:100%;height:auto}
+#lb .close{position:absolute;top:14px;right:14px;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-size:22px;cursor:pointer}
+#lb .lbsrc{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:var(--panel);padding:8px 14px;border-radius:10px;font-size:15px}
+.hidden{display:none!important}
+@media (max-width:640px){.hero h1{font-size:32px}.card h3{font-size:20px}.box{padding:20px 18px}.shead h2{font-size:24px}}
+@media (min-width:1280px){.side{position:fixed;top:90px;left:calc(50% - 430px - 280px);width:250px;font-size:14px;max-height:calc(100vh - 110px);overflow:auto}.side ol{padding-left:18px;margin:0}.side li{margin-bottom:6px}.side a{color:var(--muted);text-decoration:none}.side a:hover{color:var(--acc)}}
+@media (max-width:1279px){.side{display:none}}
+</style>
+
+<style data-visual-html-responsive="v1">
+:root {
+  --page-gutter: 22px;
+  --gutter: 22px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100%;
+}
+
+body {
+  overflow-x: visible !important;
+}
+
+.wrap,
+.nav-in,
+footer,
+[data-mobile-container] {
+  width: 100% !important;
+  margin-inline: auto;
+  padding-inline: var(--page-gutter) !important;
+}
+
+section {
+  scroll-margin-top: 70px;
+}
+
+.grid > *,
+.hero-grid > *,
+.split > *,
+.quotes > *,
+.checks > *,
+.facts > *,
+.tools > *,
+.debate > *,
+.nav-links,
+.navlinks,
+.shead > *,
+.sec-head > *,
+.tl-item,
+.timeline > *,
+[data-mobile-stack] > * {
+  min-width: 0;
+}
+
+img,
+video,
+audio,
+canvas,
+iframe,
+figure {
+  max-width: 100% !important;
+}
+
+img,
+video,
+canvas {
+  height: auto;
+}
+
+video,
+audio,
+iframe {
+  display: block;
+  width: 100% !important;
+}
+
+iframe {
+  height: auto !important;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
+
+svg {
+  max-width: 100%;
+}
+
+pre,
+table,
+.tbl,
+[data-mobile-scroll] {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+table,
+.tbl {
+  display: block;
+}
+
+[data-mobile-scroll] > svg {
+  width: 640px !important;
+  min-width: 640px !important;
+  max-width: none !important;
+  height: auto;
+}
+
+.k,
+.srcline,
+.srcline code,
+.eyebrow,
+.chip,
+.pill,
+.tag,
+.au,
+.src,
+.tc,
+.t,
+.timecode,
+.trick-head h3,
+.item-head h3,
+.check .txt,
+.talk p,
+.trick p,
+.trick li,
+.item p,
+.item li,
+.card p,
+.card li,
+.quote .q,
+.quote .ru,
+blockquote .ru,
+.tl-item p,
+.timeline p,
+.deb li,
+.callout,
+.fact .d,
+.tool .desc,
+[data-mobile-copy],
+[data-mobile-copy] p,
+[data-mobile-copy] li,
+[data-mobile-copy] dd,
+[data-mobile-wrap],
+code:not(pre code),
+h1,
+h2,
+h3,
+h4 {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.eyebrow,
+.chip,
+.pill,
+.tag,
+.au,
+.src,
+.links .src {
+  max-width: 100%;
+}
+
+.src,
+.links .src {
+  white-space: normal !important;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --page-gutter: 18px;
+    --gutter: 18px;
+    --radius: 14px;
+  }
+
+  .nav-in,
+  nav .wrap {
+    min-height: 60px;
+    height: auto !important;
+    gap: 8px !important;
+    padding-block: 8px !important;
+  }
+
+  .brand,
+  .navbrand {
+    display: none !important;
+  }
+
+  .nav-links,
+  .navlinks {
+    width: 100%;
+    margin-left: 0 !important;
+    padding-bottom: 2px;
+    justify-content: space-between;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .nav-links::-webkit-scrollbar,
+  .navlinks::-webkit-scrollbar {
+    display: block;
+    height: 2px;
+  }
+
+  nav a,
+  a.src,
+  a.tc,
+  a.t,
+  a.timecode,
+  a.btn,
+  button,
+  [role="button"],
+  .lbbtn,
+  #lb .close,
+  .lightbox .close,
+  [data-seek] {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  nav a,
+  a.src,
+  a.tc,
+  a.t,
+  a.timecode,
+  a.btn,
+  button,
+  [role="button"],
+  .lbbtn,
+  #lb .close,
+  .lightbox .close,
+  a[data-seek],
+  button[data-seek],
+  span[data-seek] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-links a,
+  .navlinks a {
+    flex: 0 0 auto;
+    padding: 9px 8px !important;
+  }
+
+  section {
+    padding-block: 52px 36px !important;
+    scroll-margin-top: 56px !important;
+  }
+
+  header.hero,
+  .hero {
+    padding-block: 24px 24px !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(30px, 8vw, 36px) !important;
+    line-height: 1.1;
+    margin-top: 18px;
+  }
+
+  .g2,
+  .g3,
+  .g4,
+  .grid:not(.g2):not(.g3):not(.g4),
+  .hero-grid,
+  .split,
+  .quotes,
+  .checks,
+  .facts,
+  .tools,
+  .debate,
+  [data-mobile-stack="grid"] {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  [data-mobile-stack="flex"] {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .canvas:not([data-mobile-diagram="reflow"]),
+  figure:not([data-mobile-diagram="reflow"]):has(> svg[viewBox]) {
+    max-width: 100%;
+    overflow-x: auto !important;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .canvas:not([data-mobile-diagram="reflow"]) > svg[viewBox]:not([data-mobile-diagram="reflow"]),
+  figure:not([data-mobile-diagram="reflow"]) > svg[viewBox]:not([data-mobile-diagram="reflow"]) {
+    width: 640px !important;
+    min-width: 640px !important;
+    max-width: none !important;
+    height: auto;
+  }
+
+  .talk,
+  .trick,
+  .item,
+  .card,
+  .quote,
+  .fact,
+  .check:not(ul),
+  .check > li,
+  .deb,
+  .thesis,
+  .thesis-card,
+  blockquote,
+  .callout,
+  [data-mobile-card] {
+    padding: 20px 18px !important;
+  }
+
+  blockquote {
+    margin-inline: 0 !important;
+  }
+
+  .trick-head,
+  .item-head,
+  .shead,
+  .sec-head,
+  .code .bar,
+  .tl-head,
+  blockquote footer {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .shead,
+  .sec-head {
+    align-items: flex-start;
+    margin-bottom: 20px !important;
+  }
+
+  .shead h2,
+  .sec-head h2 {
+    font-size: 24px !important;
+  }
+
+  .shead .src,
+  .sec-head .src {
+    margin-left: 0 !important;
+  }
+
+  .trick-head .tnum,
+  .item-head .tnum {
+    min-width: 38px;
+    height: 38px;
+    font-size: 19px;
+  }
+
+  .trick-head h3,
+  .item-head h3 {
+    padding-top: 4px;
+    font-size: 20px;
+  }
+
+  .who {
+    padding-left: 0;
+  }
+
+  .about,
+  .key,
+  .try,
+  .risk {
+    padding: 15px 16px;
+  }
+
+  .hero .sub,
+  .hero .lede,
+  .hero .lead,
+  .lead,
+  .lede,
+  .sec-sub,
+  .talk p,
+  .trick p,
+  .trick li,
+  .item p,
+  .item li,
+  .card p,
+  .card li,
+  .quote .q,
+  .quote .ru,
+  blockquote .ru,
+  .tl-item p,
+  .timeline p,
+  .check .txt,
+  .check > li,
+  .deb li,
+  .callout,
+  .fact .d,
+  .tool .desc,
+  .watch-item p,
+  [data-mobile-copy],
+  [data-mobile-copy] p,
+  [data-mobile-copy] li,
+  [data-mobile-copy] dd {
+    font-size: 16px !important;
+  }
+
+  .fact {
+    align-items: flex-start;
+  }
+
+  .fact .v {
+    min-width: 0 !important;
+  }
+
+  .tl {
+    padding-left: 24px;
+  }
+
+  .tl-thumbs .shot {
+    width: 100% !important;
+  }
+
+  .links {
+    align-items: stretch;
+  }
+
+  .links .src {
+    min-height: 44px;
+    padding: 9px 11px;
+  }
+
+  .check:not(ul) {
+    flex-wrap: wrap;
+  }
+
+  .check .txt {
+    flex: 1 1 220px;
+  }
+
+  #lb,
+  .lightbox {
+    padding: 16px !important;
+  }
+
+  footer {
+    padding-block: 36px 60px !important;
+  }
+}
+</style>
+</head>
+<body>
+<nav><div class="nav-in"><span class="brand">AI Engineering</span><div class="nav-links">
+<a href="#start">Начать</a><a href="#s-research">Исследования</a><a href="#s-reports">Отчёты</a><a href="#s-cases">Разборы</a><a href="#s-guides">Руководства</a><a href="#s-tools">Инструменты</a><a href="#plan">План</a></div></div></nav>
+<aside class="side" aria-label="Все материалы"><ol><li><a href="#arxiv-2611-13709">Выполняют ли агенты правила из AGENTS.md и CLAUDE.md</a></li><li><a href="#arxiv-2611-16289">SatisFix: агент сам перечисляет, где отступил от требований</a></li><li><a href="#arxiv-2611-14581">LLM-судья пропускает запрещённые записи в базу</a></li><li><a href="#arxiv-2611-15543">Трансляторы между API моделей молча теряют данные</a></li><li><a href="#arxiv-2611-13396">Что на самом деле измеряет расход токенов инженера</a></li><li><a href="#arxiv-2611-14808">OverServe: безобидный инструмент и промпт раздувают счёт SaaS-агента</a></li><li><a href="#arxiv-2611-15522">GHAgentCI: как агенты запускают из GitHub Actions и что с защитой</a></li><li><a href="#arxiv-2611-13241">FlowPlan: агент останавливается, когда граф совпал с планом</a></li><li><a href="#arxiv-2611-14493">Три фреймворка оценки на агентах text-to-SQL</a></li><li><a href="#arxiv-2611-13355">DeputyBench: агент действует, когда записи о разрешении нет</a></li><li><a href="#arxiv-2611-15596">Агент готовит окружение, солвер ищет баги</a></li><li><a href="#arxiv-2611-16114">ADAPT: тест засчитывается, только если падает на base и проходит на head</a></li><li><a href="#arxiv-2611-14963">Агенты чинят «запахи» GitHub Actions, если сначала правильно их найдут</a></li><li><a href="#perplexity-decider">Perplexity Decider v1.3: модель решений вместо LLM-судьи</a></li><li><a href="#arxiv-2611-13246">ExpertCrowd-SWE: 100 задач от практиков в незнакомых кодовых базах</a></li><li><a href="#openai-securing-agents">Как OpenAI изолирует сотни постоянно работающих агентов</a></li><li><a href="#arxiv-2611-17304">Агент отлаживает Postgres в продакшене: мешает доступ, а не рассуждение</a></li><li><a href="#github-agent-skills-guide">Один SKILL.md для Claude Code, Cursor и Copilot</a></li><li><a href="#hf-token-pooling">Пулинг токенов в multi-vector поиске: индекс в 4 раза меньше</a></li><li><a href="#allthingsdistributed-aws-emulator">AWS Emulator: локальный AWS, написанный агентами</a></li><li><a href="#anthropic-fable-5-2">Claude Fable 5.2: цены, режимы и что поменялось в API</a></li><li><a href="#vercel-workflow-sdk-5">Workflow SDK 5: шифрование, регионы и меньше накладных расходов</a></li></ol></aside>
+<header class="hero"><div class="wrap">
+<p class="eyebrow">AI Engineering Digest</p>
+<h1>Неделя 9–15 ноября 2026</h1>
+<p class="lead">Двадцать два материала за неделю для backend-инженера, который работает с AI-агентами. Больше всего в этот раз исследований о том, как проверять агентов: выполняют ли они правила из AGENTS.md, где ошибается LLM-судья, что теряется при переводе запросов между API моделей. Рядом — опыт OpenAI по изоляции постоянно работающих агентов, AWS Emulator и релизы, которые меняют цены и поведение API.</p>
+<div class="box" id="start"><h2>Начать с этих пяти</h2><ol class="top5"><li><a href="#arxiv-2611-13709">Выполняют ли агенты правила из AGENTS.md и CLAUDE.md</a><span>Правила в AGENTS.md агент либо выполняет всегда, либо не выполняет вовсе; что из них стоит перенести в hooks и CI.</span></li><li><a href="#arxiv-2611-15543">Трансляторы между API моделей молча теряют данные</a><span>Если между агентом и моделями стоит прокси или шлюз, он может молча терять is_error и системные инструкции.</span></li><li><a href="#openai-securing-agents">Как OpenAI изолирует сотни постоянно работающих агентов</a><span>Готовые настройки изоляции для агентов, которые работают круглосуточно: прокси, секреты, auto-review.</span></li><li><a href="#arxiv-2611-14581">LLM-судья пропускает запрещённые записи в базу</a><span>LLM-судья засчитал 929 из 1 007 проваленных эпизодов; простая проверка записей в БД поймала то, что он пропустил.</span></li><li><a href="#arxiv-2611-17304">Агент отлаживает Postgres в продакшене: мешает доступ, а не рассуждение</a><span>При отладке инцидентов в Postgres агенту не хватало доступа к pg_locks, а не умения рассуждать.</span></li></ol></div>
+<div class="box"><h2>Разделы</h2><ul class="toc"><li><a href="#s-research">Исследования</a> <b>13</b></li><li><a href="#s-reports">White papers и технические отчёты</a> <b>2</b></li><li><a href="#s-cases">Инженерные разборы</a> <b>2</b></li><li><a href="#s-guides">Практические руководства</a> <b>2</b></li><li><a href="#s-tools">Инструменты и важные изменения</a> <b>3</b></li></ul>
+<div class="tools-bar"><button type="button" class="flt on" data-f="all">Все</button><button type="button" class="flt" data-f="research">Исследования</button><button type="button" class="flt" data-f="reports">White papers и технические отчёты</button><button type="button" class="flt" data-f="cases">Инженерные разборы</button><button type="button" class="flt" data-f="guides">Практические руководства</button><button type="button" class="flt" data-f="tools">Инструменты и важные изменения</button></div>
+<div class="tools-bar"><input id="q" class="search" type="search" placeholder="Поиск по названию, теме, организации" aria-label="Поиск"><button type="button" class="reset" id="reset">Сбросить</button></div>
+<p class="found" id="found">Найдено: 22 из 22</p><p class="empty" id="empty">Ничего не найдено. Измените запрос или нажмите «Сбросить».</p>
+</div>
+</div></header>
+<main>
+<section class="sec" id="s-research" data-sec="research">
+  <div class="wrap">
+    <div class="shead"><h2>Исследования</h2><span class="count">13</span></div>
+    
+<article class="card" id="arxiv-2611-13709" data-card-id="arxiv-2611-13709" data-section="research" data-search="выполняют ли агенты правила из agents.md и claude.md do they do as they are told? investigating coding agents&#x27; adherence to explicit instructions in context files университет салерно, naist agents coding evals препринт arxiv">
+  <h3><a href="https://arxiv.org/abs/2611.13709" rel="noopener">Выполняют ли агенты правила из AGENTS.md и CLAUDE.md</a></h3>
+  <p class="meta">Университет Салерно, NAIST · 10 ноября 2026 · Препринт arXiv</p>
+  <p class="orig" lang="en">Do They Do as They Are Told? Investigating Coding Agents&#x27; Adherence to Explicit Instructions in Context Files</p>
+  <div class="tags"><span class="tag">agents</span><span class="tag">coding</span><span class="tag">evals</span></div>
+  <p class="lead-in">Команды пишут правила для агентов в AGENTS.md, CLAUDE.md и copilot-instructions.md, но до сих пор никто не проверял исполнение отдельных правил. Авторы сгенерировали проверочные скрипты для 4 123 инструкций и прогнали их по 6 541 коммиту агентов. Распределение получилось двухполюсным: правило либо выполняется всегда, либо не выполняется никогда.</p>
+  
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>Из 2 053 инструкций, к которым нашёлся хотя бы один подходящий коммит, 54,4% выполнялись во всех коммитах, 37,3% не выполнялись ни разу и только 8,3% — частично. Средний уровень соблюдения — 59,8%, медиана — 100%. Правила о тестах соблюдались реже правил о реализации: 49,2% против 63,6%. Copilot набрал 66,0%, Claude Code — 52,2%, Codex — 51,2%; проверку на чувствительность выдержал только разрыв между Copilot и Claude Code.</dd><dt>Основание</dt><dd>621 снимок контекстных файлов из 268 публичных репозиториев. Qwen 3.5 9B извлекла 14 902 кандидата в инструкции, из них 6 552 оказались явными и проверяемыми. Qwen2.5-Coder-14B написала по 10 скриптов и 10 фикстур на инструкцию; скрипт оставляли, только если с ним соглашался второй.</dd><dt>Ограничение</dt><dd>Контрольной группы нет: неизвестно, как агент вёл бы себя без правила. Ручная проверка признала корректными 71,3% скриптов (67 из 94). Медиана — 3 подходящих коммита на инструкцию. Коммиты взяты из набора AIDev, то есть от старых версий агентов.</dd><dt>Для моей работы</dt><dd>Правило, которое агент игнорирует, обычно игнорируется целиком, поэтому перефразирование помогает слабо. В своём проекте можно перенести соглашения о коммитах, ветках и тестах в hooks и CI, а в AGENTS.md оставить по одному проверяемому императиву на строку.</dd><dt>Следующий шаг</dt><dd>Выписать из AGENTS.md пять правил, которые проверяются по диффу, и написать для каждого скрипт в CI. Через неделю посмотреть, какие из них агент нарушает систематически.</dd></dl></details>
+  <div class="links"><a class="src" href="https://arxiv.org/abs/2611.13709" rel="noopener">arXiv</a></div>
+</article>
+<article class="card" id="arxiv-2611-16289" data-card-id="arxiv-2611-16289" data-section="research" data-search="satisfix: агент сам перечисляет, где отступил от требований eliciting and mitigating specification satisficing in coding agents университет пердью agents coding evals препринт arxiv">
+  <h3><a href="https://arxiv.org/abs/2611.16289" rel="noopener">SatisFix: агент сам перечисляет, где отступил от требований</a></h3>
+  <p class="meta">Университет Пердью · 12 ноября 2026 · Препринт arXiv</p>
+  <p class="orig" lang="en">Eliciting and Mitigating Specification Satisficing in Coding Agents</p>
+  <div class="tags"><span class="tag">agents</span><span class="tag">coding</span><span class="tag">evals</span></div>
+  <p class="lead-in">Агент видит правильную реализацию требования, а затем выбирает упрощённую и находит этому разумное оправдание. Обычная самопроверка такое пропускает: агент не считает свой выбор ошибкой. SatisFix один раз перед написанием кода просит агента перечислить отступления от задачи, не оценивая их, и затем сверить каждое со спецификацией.</p>
+  
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>На DeepSWE v1.1 (113 задач, mini-swe-agent, GPT-5.6-Luna, 4 прогона) pass@1 вырос с 44,25% до 50,22%. Self-Refine и ProgCo дали 46,24%, DeCRIM остался на 44,25%. Стоимость задачи — $0,897 против $0,644 у базового агента и $2,022 у Self-Refine. С OpenHands — с 46,90% до 51,33%. Без роли «советника» результат падает с 49,6% до 43,4%, то есть до уровня базового агента.</dd><dt>Основание</dt><dd>Два бенчмарка, пять моделей, два фреймворка, абляция. Авторы описывают четыре типа оправданий: переинтерпретация, сужение объёма, снижение планки и мнимый конфликт требований.</dd><dt>Ограничение</dt><dd>Прирост 4–6 п. п. при стандартном отклонении 2,3–3,6 и всего 4 прогонах; тестов значимости нет. На SWE-bench Pro по одному прогону, одна задача — около 1,96 п. п. Первое сообщение притворяется письмом мейнтейнеров, а потом извиняется за это; побочные эффекты такого приёма не измерены. Текстов промптов в статье нет.</dd><dt>Для моей работы</dt><dd>Приём ложится в любой агентный цикл без обучения: отдельный шаг «перечисли, что ты решил сделать иначе, чем в задаче, и почему». Обманную рамку в продакшене лучше заменить честной формулировкой и сравнить результат.</dd><dt>Следующий шаг</dt><dd>Добавить такой шаг перед правкой кода в своём агенте и сравнить долю принятых PR на 20–30 реальных задачах.</dd></dl></details>
+  <div class="links"><a class="src" href="https://arxiv.org/abs/2611.16289" rel="noopener">arXiv</a></div>
+</article>
+<article class="card" id="arxiv-2611-14581" data-card-id="arxiv-2611-14581" data-section="research" data-search="llm-судья пропускает запрещённые записи в базу when evaluators of ai agents disagree: native scoring, llm judges, and commit-boundary checks querypie ai evals agents backend препринт arxiv">
+  <h3><a href="https://arxiv.org/abs/2611.14581" rel="noopener">LLM-судья пропускает запрещённые записи в базу</a></h3>
+  <p class="meta">QueryPie AI · 10 ноября 2026 · Препринт arXiv</p>
+  <p class="orig" lang="en">When Evaluators of AI Agents Disagree: Native Scoring, LLM Judges, and Commit-Boundary Checks</p>
+  <div class="tags"><span class="tag">evals</span><span class="tag">agents</span><span class="tag">backend</span></div>
+  <p class="lead-in">В продакшене у агента нет эталонного ответа, поэтому его работу часто оценивает LLM-судья по транскрипту. Автор сравнил судью с проверкой конечного состояния и с простым правилом: ожидалась ли запись в БД и была ли она сделана. Судья пропустил почти все случаи, где агент записал то, чего записывать было нельзя.</p>
+  
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>Из 1 007 эпизодов (46,6%), проваленных по конечному состоянию, судья засчитал 929 (92,3%). Из 11 подтверждённых людьми запрещённых записей судьи пропустили 10–11, правило на границе коммита поймало все 11. Сам с собой судья согласен в 98,2% случаев, с проверкой состояния — в 56,2%. Запрещённые записи встретились в 11,1% эпизодов без защитных гейтов: 19,3% в домене авиакомпании и 0,8% в рознице.</dd><dt>Основание</dt><dd>2 160 эпизодов tau2-bench (авиакомпания — 50 задач, розница — 40), агенты gpt-4.1 и gpt-4.1-mini, четыре конфигурации гейтов, по 3 повтора, все записи в БД залогированы. Эталон: два аннотатора разметили 120 эпизодов по трём осям.</dd><dt>Ограничение</dt><dd>Главная цифра держится на 11 эпизодах. Правило ловит сам факт лишней записи, но не неверное содержимое: из 53 ошибочных решений о записи оно поймало 24. Для правила нужна разметка «ожидается ли запись» по типу запроса. Один бенчмарк, модели одного вендора, второй аннотатор — коллега автора.</dd><dt>Для моей работы</dt><dd>Для агента, который пишет в БД, транскрипт не заменяет журнал фактических записей. Детерминированная проверка «запись ожидалась / запись случилась» дёшева и в этом эксперименте ловила то, что пропускал судья.</dd><dt>Следующий шаг</dt><dd>Логировать каждый коммит агента в БД с типом запроса и добавить в CI проверку неожиданных записей рядом с LLM-судьёй.</dd></dl></details>
+  <div class="links"><a class="src" href="https://arxiv.org/abs/2611.14581" rel="noopener">arXiv</a></div>
+</article>
+<article class="card" id="arxiv-2611-15543" data-card-id="arxiv-2611-15543" data-section="research" data-search="трансляторы между api моделей молча теряют данные testing conversation preservation across llm apis: a rule-based oracle for detecting silent information loss независимые исследователи, университет гриффита agents evals backend препринт arxiv">
+  <h3><a href="https://arxiv.org/abs/2611.15543" rel="noopener">Трансляторы между API моделей молча теряют данные</a></h3>
+  <p class="meta">Независимые исследователи, Университет Гриффита · 11 ноября 2026 · Препринт arXiv</p>
+  <p class="orig" lang="en">Testing Conversation Preservation Across LLM APIs: A Rule-Based Oracle for Detecting Silent Information Loss</p>
+  <div class="tags"><span class="tag">agents</span><span class="tag">evals</span><span class="tag">backend</span></div>
+  <p class="lead-in">LiteLLM, AI SDK и прокси вроде claude-code-proxy переводят запрос из формата одного провайдера в формат другого. Запрос проходит валидацию схемы, но по дороге может пропасть флаг is_error у ответа инструмента или системная инструкция из середины диалога. Авторы написали оракул isloss: 27 правил сохранности, без вызовов моделей и без эталонного перевода.</p>
+  
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>На синтетическом наборе 127 из 685 переводов (18,5%) прошли проверки целевого формата, но незаметно изменили промпт, роль или данные инструментов. 203 из 558 переведённых потоков ответа (36,4%) сломали хотя бы один официальный SDK OpenAI. Потеря флага ошибки инструмента снизила корректное поведение обеих моделей Gemini с 30/30 до 0/30. Из 26 отправленных issue мейнтейнеры исправили 7.</dd><dt>Основание</dt><dd>51 форма запроса из формата Anthropic × 14 путей через LiteLLM, AI SDK v5/v7, LLM-Rosetta, @musistudio/llms и claude-code-proxy. На отложенных тестах isloss нашёл 95 из 125 внесённых дефектов (76,0%) при 2 ложных срабатываниях на 100 допустимых изменений. Двое рецензентов подтвердили 31 из 54 кандидатов.</dd><dt>Ограничение</dt><dd>18,5% — доля на синтетическом наборе, не оценка для реального трафика. На записанном трафике coding-агентов доля ниже: 4/98 (4,1%) среди валидных запросов и 13/196 (6,6%) в целом. Пути в сторону OpenAI вживую не проверялись. Примерно четверть внесённых дефектов оракул пропускает.</dd><dt>Для моей работы</dt><dd>Если между агентом и моделями стоит шлюз или прокси, на границе перевода нужны регрессионные тесты на уровне payload. Отдельно стоит проверить is_error и обработку system-сообщений в середине диалога.</dd><dt>Следующий шаг</dt><dd>Прогнать через свой шлюз запрос с ошибкой инструмента и системной вставкой посреди диалога, сравнить исходный и переведённый payload.</dd></dl></details>
+  <div class="links"><a class="src" href="https://arxiv.org/abs/2611.15543" rel="noopener">arXiv</a></div>
+</article>
+<article class="card" id="arxiv-2611-13396" data-card-id="arxiv-2611-13396" data-section="research" data-search="что на самом деле измеряет расход токенов инженера the ai era&#x27;s lines of code? a case study on what an engineer&#x27;s token spend measures cmu, jetbrains, uc irvine cost agents coding препринт arxiv">
+  <h3><a href="https://arxiv.org/abs/2611.13396" rel="noopener">Что на самом деле измеряет расход токенов инженера</a></h3>
+  <p class="meta">CMU, JetBrains, UC Irvine · 10 ноября 2026 · Препринт arXiv</p>
+  <p class="orig" lang="en">The AI Era&#x27;s Lines of Code? A Case Study on What an Engineer&#x27;s Token Spend Measures</p>
+  <div class="tags"><span class="tag">cost</span><span class="tag">agents</span><span class="tag">coding</span></div>
+  <p class="lead-in">Компании начинают считать токены как метрику продуктивности и даже ставят цели по расходу. Авторы связали пять недель телеметрии шлюза с коммитами 404 инженеров JetBrains. Связь расхода с результатом оказалась слабой, а разброс между людьми — огромным.</p>
+  
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>Среди недель с похожим числом коммитов 90-й перцентиль расхода был в 39–240 раз выше 10-го. Внутри одного инженера удвоение расхода связано примерно с 10% ростом числа коммитов; эластичность токенов по коммитам — 0,26 [0,19; 0,32]. Метрики результата объясняют 38% различий между инженерами и 13% — внутри одного человека, а сама личность инженера — 79%. Медианный вызов отправляет примерно в 400 раз больше токенов, чем получает.</dd><dt>Основание</dt><dd>3,1 млн вызовов агентов, 1 827 человеко-недель, Poisson QMLE с фиксированными эффектами человека и недели, кластерный бутстрэп. Дополнительно — опрос 412 сотрудников с долей ответов 15,8%.</dd><dt>Ограничение</dt><dd>Одна компания, которая сама делает AI-инструменты, пять недель, результат — только число коммитов. Все выводы корреляционные. Оценка «до 39% расхода не связано с результатом» — верхняя граница, она зависит от формы кривой. На третьей неделе вышла новая модель и забрала 45% расхода.</dd><dt>Для моей работы</dt><dd>Лидерборды по токенам и «токены на коммит» в этих данных почти ничего не говорят о пользе. Для бюджета полезнее связывать сессии шлюза с задачами и считать оплаченную стоимость с учётом кэша, а не сырые токены.</dd><dt>Следующий шаг</dt><dd>Добавить в логи LLM-шлюза идентификатор задачи и посмотреть, какая доля расхода приходится на длинные сессии без итогового коммита.</dd></dl></details>
+  <div class="links"><a class="src" href="https://arxiv.org/abs/2611.13396" rel="noopener">arXiv</a></div>
+</article>
+<article class="card" id="arxiv-2611-14808" data-card-id="arxiv-2611-14808" data-section="research" data-search="overserve: безобидный инструмент и промпт раздувают счёт saas-агента overserve: resource amplification attacks on saas agents via tool–prompt co-design fsu, jhu agents security cost backend препринт arxiv">
+  <h3><a href="https://arxiv.org/abs/2611.14808" rel="noopener">OverServe: безобидный инструмент и промпт раздувают счёт SaaS-агента</a></h3>
+  <p class="meta">FSU, JHU · 10 ноября 2026 · Препринт arXiv</p>
+  <p class="orig" lang="en">OverServe: Resource Amplification Attacks on SaaS Agents via Tool–Prompt Co-Design</p>
+  <div class="tags"><span class="tag">agents</span><span class="tag">security</span><span class="tag">cost</span><span class="tag">backend</span></div>
+  <p class="lead-in">В подписочном SaaS за каждый вызов модели и инструмента платит провайдер, а когда остановиться, решает сам агент. Злоумышленник-арендатор добавляет честный MCP-инструмент статуса и обычный промпт «убедись, что синхронизация завершилась». По отдельности оба проходят ревью, но пока бэкенд меняется, агент продолжает перепроверять уже выполненную задачу.</p>
+  <figure class="fig"><div class="shot" style="max-width:680px" data-full="assets/overserve-mechanism.png" data-lbmax="1020" data-href="https://arxiv.org/abs/2611.14808"><img src="assets/overserve-mechanism.png" width="2040" height="900" loading="lazy" alt="Рисунок 1 из статьи: (a) исходный промпт с подложенным инструментом — агент инструмент не использует; (b) подобранный промпт без инструмента — агент останавливается; (c) вместе и при изменениях бэкенда агент продолжает проверять уже выполненную задачу."></div><div class="figbar"><button class="lbbtn" type="button" aria-label="Открыть изображение крупнее">⤢</button></div><figcaption>Рисунок 1 из статьи: (a) исходный промпт с подложенным инструментом — агент инструмент не использует; (b) подобранный промпт без инструмента — агент останавливается; (c) вместе и при изменениях бэкенда агент продолжает проверять уже выполненную задачу. <a href="https://arxiv.org/abs/2611.14808">Источник</a></figcaption></figure>
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>В контролируемых прогонах (Qwen, 3 повтора, лимит 40 ходов) подобранный промпт даёт 5 вызовов в спокойном режиме и 40 при изменениях бэкенда. Исходный промпт — 4 вызова, к инструменту агент не обращается. На 96 повторах против атак A2M, LoopTrap и STA рост числа вызовов составил 7–10 раз, все 24 запуска OverServe прошли проверку задачи, медиана накопленных токенов выросла в 8,70 раза. Сканеры Cisco YARA, Lasso, MCPInspect, MCPShield и LLM-ревью не отметили ни один из 22 инструментов.</dd><dt>Основание</dt><dd>Сопоставленные пары «спокойный бэкенд / бэкенд с изменениями» изолируют вклад промпта и инструмента. Модели Qwen и Sonnet, задачи MCPMark и EOG.</dd><dt>Ограничение</dt><dd>Изменения бэкенда симулированы. Прокси для повторного использования префикса растёт всего в 1,62 раза, а сырые токены не равны оплаченной стоимости. Ущерб ограничен существующим лимитом исполнения. Модель угрозы требует, чтобы арендаторы могли подключать сторонние MCP-инструменты. Цифру 93,88× из таблицы авторов не стоит приводить как типичную: это отобранный случай.</dd><dt>Для моей работы</dt><dd>Если платформа разрешает клиентам свои MCP-инструменты, проверять инструмент и промпт по отдельности недостаточно. Нужны бюджеты вызовов и токенов на арендатора и детектор повторяющегося опроса статуса после завершения задачи.</dd><dt>Следующий шаг</dt><dd>Проверить в логах своей агентной платформы, сколько вызовов происходит после того, как бизнес-задача уже выполнена.</dd></dl></details>
+  <div class="links"><a class="src" href="https://arxiv.org/abs/2611.14808" rel="noopener">arXiv</a></div>
+</article>
+<article class="card" id="arxiv-2611-15522" data-card-id="arxiv-2611-15522" data-section="research" data-search="ghagentci: как агенты запускают из github actions и что с защитой ghagentci: a dataset of coding-agent invocations in ci workflow histories unlv agents coding security backend препринт arxiv">
+  <h3><a href="https://arxiv.org/abs/2611.15522" rel="noopener">GHAgentCI: как агенты запускают из GitHub Actions и что с защитой</a></h3>
+  <p class="meta">UNLV · 11 ноября 2026 · Препринт arXiv</p>
+  <p class="orig" lang="en">GHAgentCI: A Dataset of Coding-Agent Invocations in CI Workflow Histories</p>
+  <div class="tags"><span class="tag">agents</span><span class="tag">coding</span><span class="tag">security</span><span class="tag">backend</span></div>
+  <p class="lead-in">Coding-агентов всё чаще вызывают из GitHub Actions для ревью PR, разбора issue и правок кода, но такие workflow выглядят как обычный CI. Авторы выпустили майнер cai-miner и собрали историю 15 928 workflow из 6 345 репозиториев. Самое полезное в работе — замеры защитных настроек у workflow, которые запускаются из issue и комментариев.</p>
+  
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>Среди workflow, запускаемых issue или комментарием, 85% ограничивают круг тех, кто может их вызвать, но только 19% явно задают permissions токена и лишь 24% выделенных actions закреплены по SHA. Из 327 workflow с pull_request_target только 55% ограничивают инициаторов. Способ подключения меняется: доля выделенных actions среди новых агентных workflow упала с 73,9% (2-й квартал 2025) до 42,1% (3-й квартал 2026), вызовы CLI выросли с 7,3% до 27,6%.</dd><dt>Основание</dt><dd>196 938 репозиториев SEART (от 300 коммитов, активность за последний год), 159 878 ревизий, 205 832 записи. Ручная разметка 576 записей (κ = 0,96): подтверждение 96,1% для выделенных actions и 81,9% для вызовов CLI.</dd><dt>Ограничение</dt><dd>Анализируются объявления в YAML, а не фактические запуски. Полнота неизвестна: в выборке из 200 непомеченных workflow 5,5% содержали пропущенный вызов агента. Сравнения с обычными, неагентными workflow нет, поэтому нельзя сказать, хуже ли агентные.</dd><dt>Для моей работы</dt><dd>Workflow, где агент получает токен репозитория по триггеру из комментария, стоит проверять по трём пунктам: кто может его запустить, какие permissions у токена и закреплены ли actions по SHA.</dd><dt>Следующий шаг</dt><dd>Найти в своих репозиториях workflow с claude -p, codex exec или агентными actions и проверить эти три настройки; для массовой проверки подойдёт cai-miner.</dd></dl></details>
+  <div class="links"><a class="src" href="https://arxiv.org/abs/2611.15522" rel="noopener">arXiv</a></div>
+</article>
+<article class="card" id="arxiv-2611-13241" data-card-id="arxiv-2611-13241" data-section="research" data-search="flowplan: агент останавливается, когда граф совпал с планом flowplan: reducing the token cost of coding agents with abstraction-guided planning and verification йоркский университет agents coding cost evals препринт arxiv">
+  <h3><a href="https://arxiv.org/abs/2611.13241" rel="noopener">FlowPlan: агент останавливается, когда граф совпал с планом</a></h3>
+  <p class="meta">Йоркский университет · 9 ноября 2026 · Препринт arXiv</p>
+  <p class="orig" lang="en">FlowPlan: Reducing the Token Cost of Coding Agents with Abstraction-Guided Planning and Verification</p>
+  <div class="tags"><span class="tag">agents</span><span class="tag">coding</span><span class="tag">cost</span><span class="tag">evals</span></div>
+  <p class="lead-in">Coding-агент на каждом шаге заново прогоняет растущий контекст: у Claude Code с Haiku 4.5 на SWE-bench Pro это в среднем 3,7 млн токенов на issue. После правки агент часто продолжает перепроверять результат. FlowPlan даёт ему MCP-сервер с графами потока управления и данных: агент планирует изменение графа, правит код и останавливается, когда перестроенный граф совпадает с планом.</p>
+  <figure class="fig"><div class="shot" style="max-width:680px" data-full="assets/flowplan-example.png" data-lbmax="758" data-href="https://arxiv.org/abs/2611.13241"><img src="assets/flowplan-example.png" width="1516" height="1020" loading="lazy" alt="Рисунок 1 из статьи: задача ansible из SWE-bench Pro. Обычный Claude Code после правки 9 раз перезапускает тесты — 50 вызовов и 2,70M токенов. FlowPlan находит дефект в блоке B9, планирует изменение и останавливается — 17 вызовов и 0,53M токенов."></div><div class="figbar"><button class="lbbtn" type="button" aria-label="Открыть изображение крупнее">⤢</button></div><figcaption>Рисунок 1 из статьи: задача ansible из SWE-bench Pro. Обычный Claude Code после правки 9 раз перезапускает тесты — 50 вызовов и 2,70M токенов. FlowPlan находит дефект в блоке B9, планирует изменение и останавливается — 17 вызовов и 0,53M токенов. <a href="https://arxiv.org/abs/2611.13241">Источник</a></figcaption></figure>
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>С Haiku 4.5 расход токенов составил 0,46–0,47 от базового на SWE-bench Pro, 0,32–0,35 на Verified и 0,68–0,74 на SecBench. С Sonnet 5 — 0,72–0,76, 0,73–0,74 и 0,92–0,94 (на SecBench незначимо). Разница в доле решённых задач — от −4,6 до +4,5 п. п., ни одна не значима по тесту Макнемара. На Pro 75% экономии приходится на фазу после правки.</dd><dt>Основание</dt><dd>Claude Code 2.1.220 с низким уровнем рассуждения, один прогон на задачу: 158 задач SWE-bench Pro, 218 Verified, 169 SecBench. Сравнение с пятью методами 2026 года, которые авторы воспроизвели сами. Пять инструментов MCP (flow_of, flow_locate, flow_plan, flow_check, flow_verify) и skill /flowfix.</dd><dt>Ограничение</dt><dd>Токены — не деньги: 96–98% базового расхода приходятся на дешёвые чтения кэша, а FlowPlan увеличивает дорогие записи в кэш. Простой запрет запускать код обходит FlowPlan с Sonnet 5 на Verified (0,56 против 0,73). Нужный элемент графа агент нашёл точно в 47% сессий. Только Python и C/C++.</dd><dt>Для моей работы</dt><dd>Полезная идея здесь — явная точка остановки: план изменения и проверка, что дифф ему соответствует. Её можно повторить и без графов, например через ожидаемый список изменённых функций.</dd><dt>Следующий шаг</dt><dd>Посчитать в логах своего агента долю токенов, потраченных после первой успешной правки, прежде чем внедрять что-то подобное.</dd></dl></details>
+  <div class="links"><a class="src" href="https://arxiv.org/abs/2611.13241" rel="noopener">arXiv</a></div>
+</article>
+<article class="card" id="arxiv-2611-14493" data-card-id="arxiv-2611-14493" data-section="research" data-search="три фреймворка оценки на агентах text-to-sql comparative analysis of agent evaluation frameworks: stability, detection, and discovery in enterprise analytics agents amazon evals agents security препринт arxiv, доклад воркшопа kdd">
+  <h3><a href="https://arxiv.org/abs/2611.14493" rel="noopener">Три фреймворка оценки на агентах text-to-SQL</a></h3>
+  <p class="meta">Amazon · 10 ноября 2026 · Препринт arXiv, доклад воркшопа KDD</p>
+  <p class="orig" lang="en">Comparative Analysis of Agent Evaluation Frameworks: Stability, Detection, and Discovery in Enterprise Analytics Agents</p>
+  <div class="tags"><span class="tag">evals</span><span class="tag">agents</span><span class="tag">security</span></div>
+  <p class="lead-in">Авторы из Amazon сравнили три подхода к оценке аналитических агентов, которые пишут SQL и вызывают инструменты: LLM-судья с полным trace в OpenTelemetry (Strands Evals), судья только по тексту ответа с red-teaming (PromptFoo) и строковые эвристики (Agenta). Результат зависит от того, сколько информации получает судья. Ни один из вариантов не оказался достаточно стабильным для гейта в CI.</p>
+  <figure class="fig"><div class="shot" style="max-width:680px" data-full="assets/eval-stability-heatmap.png" data-lbmax="791" data-href="https://arxiv.org/abs/2611.14493"><img src="assets/eval-stability-heatmap.png" width="1583" height="774" loading="lazy" alt="Рисунок 1 из статьи: средний внутрислучайный разброс оценок (меньше — стабильнее) для PromptFoo и Strands Evals при трёх моделях-судьях. Самая нестабильная ячейка — Qwen3 32B при оценке стиля в Strands (0,207)."></div><div class="figbar"><button class="lbbtn" type="button" aria-label="Открыть изображение крупнее">⤢</button></div><figcaption>Рисунок 1 из статьи: средний внутрислучайный разброс оценок (меньше — стабильнее) для PromptFoo и Strands Evals при трёх моделях-судьях. Самая нестабильная ячейка — Qwen3 32B при оценке стиля в Strands (0,207). <a href="https://arxiv.org/abs/2611.14493">Источник</a></figcaption></figure>
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>На 72 размеченных экспертами случаях Strands получил F1 0,896 при доле ложных срабатываний 10,3%. У PromptFoo полнота 87,9%, но ложные срабатывания — 48,7%; Agenta помечает всё подряд. Ошибки выбора инструмента Strands ловит в 89% случаев, PromptFoo — в 11%. Совпадение решений между повторами — 82–92%, этого мало для CI. При генерации новых тестов Strands нашёл 9 функциональных ошибок, например баг с отрицательным индексом в SUBSTR, из-за которого запрос молча возвращал ноль строк. PromptFoo нашёл 15 уязвимостей, например утечку схемы.</dd><dt>Основание</dt><dd>Два агента для цепочек поставок, по 9 инструментов, Claude Sonnet 4.5; судья — Claude Sonnet 4.6; замороженные trace. Фаза стабильности — 5 605 оценок.</dd><dt>Ограничение</dt><dd>Все авторы из Amazon, а выигравший Strands — родной для их стека. Судьям давали разный объём информации и разную температуру, поэтому сравнивается скорее доступ к данным, чем качество инструментов. Выборка маленькая, один эксперт на агента, 9 меток поменяли после подсказки оценщика.</dd><dt>Для моей работы</dt><dd>Если агент ходит в БД, судья должен видеть trace вызовов инструментов, а не только финальный текст. Нестабильного судью разумно использовать для обратной связи при разработке, а гейтом в CI делать детерминированные проверки.</dd><dt>Следующий шаг</dt><dd>Дать своему eval-судье полный trace вызовов и сравнить, сколько ошибок выбора инструмента он находит по сравнению с оценкой по тексту.</dd></dl></details>
+  <div class="links"><a class="src" href="https://arxiv.org/abs/2611.14493" rel="noopener">arXiv</a></div>
+</article>
+<article class="card" id="arxiv-2611-13355" data-card-id="arxiv-2611-13355" data-section="research" data-search="deputybench: агент действует, когда записи о разрешении нет deputybench: evaluating contextual safety in enterprise agents hao zhao и соавтор agents security evals препринт arxiv">
+  <h3><a href="https://arxiv.org/abs/2611.13355" rel="noopener">DeputyBench: агент действует, когда записи о разрешении нет</a></h3>
+  <p class="meta">Hao Zhao и соавтор · 9 ноября 2026 · Препринт arXiv</p>
+  <p class="orig" lang="en">DEPUTYBENCH: Evaluating Contextual Safety in Enterprise Agents</p>
+  <div class="tags"><span class="tag">agents</span><span class="tag">security</span><span class="tag">evals</span></div>
+  <p class="lead-in">Корпоративный агент умеет выполнить действие, но право на него зависит от записей в бэкенде: лимитов, согласий, накопленных счётчиков. В DeputyBench из сервисов на FastAPI специально убрана одна проверка прав, и у каждого подозрительного сценария есть легитимный двойник с той же целью. Сравнивается, сколько вреда агент причиняет и сколько законной работы недоделывает.</p>
+  
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>12 моделей, 13 326 запусков: совокупная безопасность — 88,0%, обе версии пары проходят в 79,1% случаев. Две самые безопасные модели (0,991) оставляют несделанными 11,6–15,8% легитимных задач. Модели Seed доделывают 0,906–0,957 легитимных задач, но выполняют запрещённое в 0,168–0,373 подозрительных запусков. Когда запись, решающая вопрос о праве, скрыта, ограниченное действие выполняется в 10,3% запусков; при явном запрете — в 3,5%.</dd><dt>Основание</dt><dd>79 базовых сценариев, 375 экземпляров в изолированных системах из 5–7 контейнеров; вред и завершённость считает отдельный сборщик аудита. Контролируемое исследование: 6 моделей, 28 задач, 5 058 запусков.</dd><dt>Ограничение</dt><dd>Разница 6,8 п. п. — вторичный анализ: 61 из 100 таких выполнений приходится на четыре задачи о приватности. Без них разрыв падает до +1,8 п. п. и становится незначимым. Задачи синтетические, код и данные пока не опубликованы, сами авторы пишут, что это не оценка продакшен-риска.</dd><dt>Для моей работы</dt><dd>В бэкенде, где агент вызывает API от имени пользователя, проверку прав нельзя перекладывать на модель. А если агент сам проверяет согласие, отсутствие записи должно означать отказ, а не разрешение.</dd><dt>Следующий шаг</dt><dd>Найти в своих API для агентов операции, где право зависит от накопленных счётчиков или согласий, и убедиться, что проверка стоит в сервисе, а не в промпте.</dd></dl></details>
+  <div class="links"><a class="src" href="https://arxiv.org/abs/2611.13355" rel="noopener">arXiv</a></div>
+</article>
+<article class="card" id="arxiv-2611-15596" data-card-id="arxiv-2611-15596" data-section="research" data-search="агент готовит окружение, солвер ищет баги bug finding with agentic symbolic execution чалмерс, эдинбургский университет agents coding evals backend препринт arxiv">
+  <h3><a href="https://arxiv.org/abs/2611.15596" rel="noopener">Агент готовит окружение, солвер ищет баги</a></h3>
+  <p class="meta">Чалмерс, Эдинбургский университет · 11 ноября 2026 · Препринт arXiv</p>
+  <p class="orig" lang="en">Bug Finding With Agentic Symbolic Execution</p>
+  <div class="tags"><span class="tag">agents</span><span class="tag">coding</span><span class="tag">evals</span><span class="tag">backend</span></div>
+  <p class="lead-in">Символьное исполнение плохо работает на реальных веб-приложениях: у кода нет контрактов, а вызовы ORM и базы данных символически не исполнить. Авторы поручили Claude Code с Opus 5.5 написать заглушки ORM по схеме БД, ленивую инициализацию моделей и пред- и постусловия функций. Потом CrossHair ищет контрпримеры, а отдельный агент-аудитор отсеивает артефакты.</p>
+  <figure class="fig"><div class="shot" style="max-width:590px" data-full="assets/crosshair-env-ablation.png" data-lbmax="590" data-href="https://arxiv.org/abs/2611.15596"><img src="assets/crosshair-env-ablation.png" width="1180" height="1200" loading="lazy" alt="Рисунок 4 из статьи: доля исполненных функций с контрактами по каждому из 11 репозиториев при трёх окружениях — голый CrossHair, только инициализация фреймворка и полный синтез окружения."></div><div class="figbar"><button class="lbbtn" type="button" aria-label="Открыть изображение крупнее">⤢</button></div><figcaption>Рисунок 4 из статьи: доля исполненных функций с контрактами по каждому из 11 репозиториев при трёх окружениях — голый CrossHair, только инициализация фреймворка и полный синтез окружения. <a href="https://arxiv.org/abs/2611.15596">Источник</a></figcaption></figure>
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>С синтезированным окружением CrossHair исполняет 81% из 5 406 функций с контрактами, без него — 4,5%, с одной только инициализацией фреймворка — 29,5%. Найдено 1 050 воспроизведённых багов, 920 из них воспроизвелись сквозным тестом на неизменённом приложении. Та же модель простым чтением кода нашла больше — 1 824, но пропустила 312 багов конвейера; вместе это на 17% больше, чем у одного чтения.</dd><dt>Основание</dt><dd>11 open-source приложений на Python (Zulip, NetBox, Superset и другие), 1 156 044 строки. Каждый баг подтверждён модульным и сквозным тестом. Слепая проверка 50 + 50 багов: реальными признаны 72% и 70%.</dd><dt>Ограничение</dt><dd>По числу находок чтение кода выигрывает, ценность метода — в дополнительных краевых случаях. Только Python, Django и SQLAlchemy. Мейнтейнеры отчёты не проверяли, серьёзность оценивала модель: 689 низкой, 321 средней, 39 высокой, 1 критической. Конвейер стоит не меньше $2 821 против примерно $712 + $925 у базового варианта.</dd><dt>Для моей работы</dt><dd>Переносимый принцип: «LLM предлагает, солвер проверяет, конкретное исполнение подтверждает». Для Go это означает генерацию моков по схеме БД и приём находки агента только вместе с воспроизводящим тестом.</dd><dt>Следующий шаг</dt><dd>Потребовать от своего агента-ревьюера на каждую найденную ошибку падающий тест и сравнить долю подтверждённых находок.</dd></dl></details>
+  <div class="links"><a class="src" href="https://arxiv.org/abs/2611.15596" rel="noopener">arXiv</a></div>
+</article>
+<article class="card" id="arxiv-2611-16114" data-card-id="arxiv-2611-16114" data-section="research" data-search="adapt: тест засчитывается, только если падает на base и проходит на head adapt: agentic diff-aware patch testing for pull requests vahid haratian и соавторы agents coding evals cost препринт arxiv">
+  <h3><a href="https://arxiv.org/abs/2611.16114" rel="noopener">ADAPT: тест засчитывается, только если падает на base и проходит на head</a></h3>
+  <p class="meta">Vahid Haratian и соавторы · 11 ноября 2026 · Препринт arXiv</p>
+  <p class="orig" lang="en">ADAPT: Agentic Diff-Aware Patch Testing for Pull Requests</p>
+  <div class="tags"><span class="tag">agents</span><span class="tag">coding</span><span class="tag">evals</span><span class="tag">cost</span></div>
+  <p class="lead-in">Многие PR сливают без тестов на новое поведение. В ADAPT агент на OpenHands читает дифф PR и пишет модульные тесты, а инструмент verify_f2p.sh запускает каждый тест на base и на head. Тест принимается, только если на base он падает, а на head проходит. Инструмент объясняет отказ и показывает изменённые строки, до которых тесты ещё не дошли.</p>
+  <figure class="fig"><div class="shot" style="max-width:535px" data-full="assets/adapt-pipeline.png" data-lbmax="535" data-href="https://arxiv.org/abs/2611.16114"><img src="assets/adapt-pipeline.png" width="1070" height="1008" loading="lazy" alt="Рисунок 1 из статьи: окружение выполнения в три слоя и цикл агента ADAPT. Инструмент проверки F2P требует, чтобы тест проходил на HEAD и падал на BASE."></div><div class="figbar"><button class="lbbtn" type="button" aria-label="Открыть изображение крупнее">⤢</button></div><figcaption>Рисунок 1 из статьи: окружение выполнения в три слоя и цикл агента ADAPT. Инструмент проверки F2P требует, чтобы тест проходил на HEAD и падал на BASE. <a href="https://arxiv.org/abs/2611.16114">Источник</a></figcaption></figure>
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>На 426 PR из SWE-bench Verified ADAPT с GPT-4o получил 62,0% тестов fail-to-pass против опубликованных 35,4% у BLAST. С GPT-5 mini — 89,9% при $0,04 на PR (у GPT-4o — $1,12). Из 6 713 предложенных тестов условие выполнили только 992 (14,8%), то есть верификатор отбрасывает большую часть. На 137 общих PR ADAPT полностью покрыл изменённые строки в 83,9% случаев против 79,6% у ChaCo.</dd><dt>Основание</dt><dd>Сравнение с BLAST и ChaCo, ручная оценка 70 тестов четырьмя аннотаторами: важность 4,54 из 5, сила проверок 4,35 из 5.</dd><dt>Ограничение</dt><dd>Результат BLAST взят из его статьи, а не перезапущен, и входные данные у методов разные. Для GPT-5 mini базовой линии на той же модели нет. Агенту подсказывают имена тестовых файлов. Тесты разработчиков всё равно покрывают больше в 78–81% случаев. Только Python, нужны Docker-окружения, где собираются обе версии.</dd><dt>Для моей работы</dt><dd>Самое переносимое — инструмент для агента «запусти тест на base и на head». Он отсекает тесты, которые проходят всегда и ничего не проверяют. Для Go это git worktree на двух коммитах и go test.</dd><dt>Следующий шаг</dt><dd>Дать своему агенту, который пишет тесты, такой инструмент проверки и посмотреть, какая доля его тестов действительно ловит изменение.</dd></dl></details>
+  <div class="links"><a class="src" href="https://arxiv.org/abs/2611.16114" rel="noopener">arXiv</a></div>
+</article>
+<article class="card" id="arxiv-2611-14963" data-card-id="arxiv-2611-14963" data-section="research" data-search="агенты чинят «запахи» github actions, если сначала правильно их найдут gha-smellfix: taking action with agentic llms for detecting and refactoring github actions workflow smells anderson uchôa и соавторы agents coding evals security препринт arxiv">
+  <h3><a href="https://arxiv.org/abs/2611.14963" rel="noopener">Агенты чинят «запахи» GitHub Actions, если сначала правильно их найдут</a></h3>
+  <p class="meta">Anderson Uchôa и соавторы · 11 ноября 2026 · Препринт arXiv</p>
+  <p class="orig" lang="en">GHA-SmellFix: Taking Action with Agentic LLMs for Detecting and Refactoring GitHub Actions Workflow Smells</p>
+  <div class="tags"><span class="tag">agents</span><span class="tag">coding</span><span class="tag">evals</span><span class="tag">security</span></div>
+  <p class="lead-in">Существующие инструменты для GitHub Actions находят проблемные шаблоны в workflow, но исправлять их приходится вручную. Авторы сравнили два устройства агента: один агент сразу находит и чинит, или сначала агент-детектор решает, есть ли проблема, и только потом вызывается агент-рефакторер. Узким местом оказалось обнаружение, а не исправление.</p>
+  
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>Если проблема найдена верно, её устраняют в 98,0% случаев, а чисто, без лишних изменений, — в 92,6%. Сквозь весь конвейер чисто устраняется 74%: из 474 неудач 439 — пропущенные обнаружения. На workflow без проблемы агенты сделали 93 лишние правки, и 54,84% из них затронули конструкции, влияющие на поведение. Разделение на два агента подняло F1 обнаружения с 86,34% до 87,55%, значимо — только для GPT-5.4-nano.</dd><dt>Основание</dt><dd>19 типов проблем, 1 710 размеченных вручную пар (κ = 0,848), сбалансированный тестовый набор из 570 пар, четыре небольшие модели, 4 560 результатов проверены вслепую.</dd><dt>Ограничение</dt><dd>Сбалансированный набор завышает точность: с поправкой на реальную частоту преимущество двух агентов сжимается до 0,14 п. п. Workflow не запускались. Агенту заранее говорят, какую проблему искать. С правилами существующих анализаторов не сравнивали.</dd><dt>Для моей работы</dt><dd>Для агента, который правит CI, полезны две вещи: гейт обнаружения перед генерацией патча и проверка диффа YAML на изменение поведения. Закрепление версий actions удалось хуже всего: чистое исправление только в 40% случаев.</dd><dt>Следующий шаг</dt><dd>Если агент правит workflow, добавить проверку, что его дифф не трогает triggers, permissions и версии actions без явной причины.</dd></dl></details>
+  <div class="links"><a class="src" href="https://arxiv.org/abs/2611.14963" rel="noopener">arXiv</a></div>
+</article>
+  </div>
+</section>
+<section class="sec" id="s-reports" data-sec="reports">
+  <div class="wrap">
+    <div class="shead"><h2>White papers и технические отчёты</h2><span class="count">2</span></div>
+    
+<article class="card" id="perplexity-decider" data-card-id="perplexity-decider" data-section="reports" data-search="perplexity decider v1.3: модель решений вместо llm-судьи perplexity decider v1.3: training, eval, and use cases perplexity evals agents rag security cost технический отчёт вендора">
+  <h3><a href="https://www.perplexity.ai/hub/blog/perplexity-decider" rel="noopener">Perplexity Decider v1.3: модель решений вместо LLM-судьи</a></h3>
+  <p class="meta">Perplexity · 12 ноября 2026 · Технический отчёт вендора</p>
+  <p class="orig" lang="en">Perplexity Decider v1.3: Training, eval, and use cases</p>
+  <div class="tags"><span class="tag">evals</span><span class="tag">agents</span><span class="tag">RAG</span><span class="tag">security</span><span class="tag">cost</span></div>
+  <p class="lead-in">Классификацию, маршрутизацию, модерацию и реранкинг часто отдают генеративной LLM, хотя это медленно и дорого. Perplexity выложила открытые веса (Apache) специализированной модели решений и описала, как её обучали и проверяли. Модель за один проход отвечает на несколько вопросов к общему контексту.</p>
+  
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>По данным Perplexity, на 63 задачах классификации запросов точность 91,6%, на 6,54 п. п. выше их продакшен-классификаторов; эталон переразмечен frontier-моделью. Реранкинг 50 кандидатов на 72 задачах поиска — nDCG@10 83,99, на 1,81 выше Qwen3-Reranker-8B. На 1 млн продакшен-запросов (2 318 887 вопросов) согласие с LLM-судьями — 93,98%, доля перевернувшихся меток — 0,27% против 2,69–4,84% у других моделей.</dd><dt>Основание</dt><dd>Основа — Qwen3.8-27B с двунаправленным вниманием и головой решения на токене &lt;|marker|&gt;. Полный fine-tune, затем LoRA, усреднение трёх сидов, дистилляция в Flash на Qwen3.5-4B. Внутренний аудит правил безопасности: модель прочитала 1 млрд токенов из 7 000 агентных сессий, итог — 14 исправлений правил.</dd><dt>Ограничение</dt><dd>Все цифры измерены самой Perplexity, эталоны размечены LLM, а не людьми. Данных о задержке нет. В захваченной версии страницы нет цифр графика стоимости, а сам текст предупреждает, что стоимость зависит от нагрузки. Режим изолированных вопросов мешает кэшировать общий контекст между запросами.</dd><dt>Для моей работы</dt><dd>Для маршрутизации запросов, гардрейлов и проверки вывода агента можно взять компактную модель решений вместо вызова большой LLM. Пороги стоит настроить на небольшом размеченном наборе из своего домена.</dd><dt>Следующий шаг</dt><dd>Сравнить Decider Flash с текущим LLM-классификатором на 200 своих размеченных запросах по точности и задержке.</dd></dl></details>
+  <div class="links"><a class="src" href="https://www.perplexity.ai/hub/blog/perplexity-decider" rel="noopener">Блог Perplexity</a><a class="src" href="https://news.ycombinator.com/item?id=50488464" rel="noopener">Обсуждение на HN</a></div>
+</article>
+<article class="card" id="arxiv-2611-13246" data-card-id="arxiv-2611-13246" data-section="reports" data-search="expertcrowd-swe: 100 задач от практиков в незнакомых кодовых базах expertcrowd-swe: measuring frontier coding agents on expert-authored engineering tasks in unfamiliar codebases toptal expertcrowd, hud coding evals agents технический отчёт, препринт arxiv">
+  <h3><a href="https://arxiv.org/abs/2611.13246" rel="noopener">ExpertCrowd-SWE: 100 задач от практиков в незнакомых кодовых базах</a></h3>
+  <p class="meta">Toptal ExpertCrowd, HUD · 9 ноября 2026 · Технический отчёт, препринт arXiv</p>
+  <p class="orig" lang="en">ExpertCrowd-SWE: Measuring Frontier Coding Agents on Expert-Authored Engineering Tasks in Unfamiliar Codebases</p>
+  <div class="tags"><span class="tag">coding</span><span class="tag">evals</span><span class="tag">agents</span></div>
+  <p class="lead-in">На DeepSWE v1.1 четыре frontier-модели укладываются в 0,9 пункта, и бенчмарк перестал их различать. EC-SWE — 100 задач от 17 практикующих инженеров в 87 open-source проектах на 11 языках, с грейдерами от авторов задач. Медианное эталонное решение меняет 471 строку в 4,5 файла.</p>
+  <figure class="fig"><div class="shot" style="max-width:600px" data-full="assets/ec-swe-heatmap.png" data-lbmax="911" data-href="https://arxiv.org/abs/2611.13246"><img src="assets/ec-swe-heatmap.png" width="911" height="348" loading="lazy" alt="Рисунок 3 из статьи: оценка каждой из 100 задач (среднее пяти прогонов) для семи моделей; задачи упорядочены по средней оценке. Видно, что две лидирующие модели решают разные задачи."></div><div class="figbar"><button class="lbbtn" type="button" aria-label="Открыть изображение крупнее">⤢</button></div><figcaption>Рисунок 3 из статьи: оценка каждой из 100 задач (среднее пяти прогонов) для семи моделей; задачи упорядочены по средней оценке. Видно, что две лидирующие модели решают разные задачи. <a href="https://arxiv.org/abs/2611.13246">Источник</a></figcaption></figure>
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>Claude Opus 5.5 набрал 67,3%, GPT-6 Astra — 63,7%, но парный 95% интервал [−1,4; +9,7] их не разделяет. Claude Fable 5.1 — 46,5%, Qwen, DeepSeek и Grok — 32–34%. GPT-6 Astra тратит медианно 33 шага против 160 у Opus. Интервалы из-за выборки задач в 2–10 раз шире, чем разброс между прогонами.</dd><dt>Основание</dt><dd>Семь моделей, 5 прогонов на задачу, лимит 1 000 шагов, родные инструменты провайдеров в харнессе HUD. Ограничители в грейдерах: блокеры снижают максимум (например, до 0,60), гейты обнуляют прогон, например за правку существующих тестов. Блокеры сработали в 7,8% прогонов, гейты — в 2,3%.</dd><dt>Ограничение</dt><dd>Авторы связаны с платформой и лидербордом, независимой проверки грейдеров нет. У каждого провайдера свой харнесс, поэтому часть разрыва может объясняться инструментами. Задачи отбирали по сложности для текущих моделей. Прогоны, упёршиеся в лимит, перезапускали. Результаты не переносятся напрямую на Claude Code или Codex CLI.</dd><dt>Для моей работы</dt><dd>Схему грейдера с блокерами и гейтами («не трогать существующие тесты», «набор тестов остаётся зелёным») можно перенести в свои eval. Выбор модели зависит от режима: при best-of-N с проверкой лучше Opus, при одной попытке — GPT-6 Astra.</dd><dt>Следующий шаг</dt><dd>Добавить в свой eval coding-агента гейт за правку существующих тестов и считать доверительные интервалы по задачам, а не только по прогонам.</dd></dl></details>
+  <div class="links"><a class="src" href="https://arxiv.org/abs/2611.13246" rel="noopener">arXiv</a></div>
+</article>
+  </div>
+</section>
+<section class="sec" id="s-cases" data-sec="cases">
+  <div class="wrap">
+    <div class="shead"><h2>Инженерные разборы</h2><span class="count">2</span></div>
+    
+<article class="card" id="openai-securing-agents" data-card-id="openai-securing-agents" data-section="cases" data-search="как openai изолирует сотни постоянно работающих агентов securing persistent agents like openclaw at openai openai agents security backend инженерный разбор вендора">
+  <h3><a href="https://developers.openai.com/blog/securing-persistent-agents-like-openclaw-at-openai" rel="noopener">Как OpenAI изолирует сотни постоянно работающих агентов</a></h3>
+  <p class="meta">OpenAI · 12 ноября 2026 · Инженерный разбор вендора</p>
+  <p class="orig" lang="en">Securing persistent agents like OpenClaw at OpenAI</p>
+  <div class="tags"><span class="tag">agents</span><span class="tag">security</span><span class="tag">backend</span></div>
+  <p class="lead-in">Постоянный агент работает круглосуточно, сам меняет свою конфигурацию и пишет произвольный код. Поэтому угроза приходит изнутри, от его ошибочных действий. OpenAI описала, как держит в компании больше 500 таких агентов: разделение доверенного и недоверенного кода, песочница, второе LLM-ревью действий и отдельная идентичность для каждого агента.</p>
+  
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>Control plane (Gateway) работает в отдельном контейнере, а в OpenAI — в отдельном кластере, и считается доверенным. Агент и всё, что он пишет, считаются недоверенными. В песочнице Codex: сетевой прокси со списком разрешённых хостов (запрещены pastebin, webhook.site, 169.254.169.254, metadata.google.internal), запись только в рабочую папку агента, ~/.ssh закрыт. Секреты выдаёт брокер учётных данных, GH_TOKEN и GITHUB_TOKEN убираются из окружения. Auto-review вторым LLM обязателен для всех действий, чтобы люди не уставали от подтверждений.</dd><dt>Основание</dt><dd>Описание собственного развёртывания OpenAI с готовыми профилями requirements.toml и config.toml. У каждого агента своя учётная запись (ChatGPT Service Account) и отдельный ключ для инференса. Каждое изменение control plane и каждый ход агента логируются, доступ к логам есть у небольшой части команды безопасности.</dd><dt>Ограничение</dt><dd>Метрик нет: ни доли ложных срабатываний auto-review, ни пропущенных атак, ни стоимости второго LLM на каждом действии. Атаки на эти механизмы не показаны. Часть настроек помечена experimental. Авторы сами признают, что очистка переменных окружения не прячет секреты, лежащие в доступных файлах.</dd><dt>Для моей работы</dt><dd>Схема переносится на любой агентный бэкенд: control plane отдельно от исполнения, исходящий трафик через прокси со списком разрешённых хостов, закрытый доступ к метаданным облака, у каждого агента своя учётная запись вместо пользовательских ключей.</dd><dt>Следующий шаг</dt><dd>Проверить, может ли ваш агент обратиться к 169.254.169.254 и прочитать ~/.ssh, и закрыть оба пути на уровне песочницы.</dd></dl></details>
+  <div class="links"><a class="src" href="https://developers.openai.com/blog/securing-persistent-agents-like-openclaw-at-openai" rel="noopener">OpenAI Developers</a></div>
+</article>
+<article class="card" id="arxiv-2611-17304" data-card-id="arxiv-2611-17304" data-section="cases" data-search="агент отлаживает postgres в продакшене: мешает доступ, а не рассуждение where llm agents get stuck debugging databases: access more than reasoning густаво пинто agents coding backend полевое наблюдение, препринт arxiv">
+  <h3><a href="https://arxiv.org/abs/2611.17304" rel="noopener">Агент отлаживает Postgres в продакшене: мешает доступ, а не рассуждение</a></h3>
+  <p class="meta">Густаво Пинто · 12 ноября 2026 · Полевое наблюдение, препринт arXiv</p>
+  <p class="orig" lang="en">Where LLM Agents Get Stuck Debugging Databases: Access More Than Reasoning</p>
+  <div class="tags"><span class="tag">agents</span><span class="tag">coding</span><span class="tag">backend</span></div>
+  <p class="lead-in">Автор десять дней вёл Claude Code через восемь инцидентов с базой данных в продакшен-системе отправки сообщений: Python, asyncpg, PgBouncer, Postgres, Kubernetes. В продакшене агент видел только поиск по логам, read-only SQL через человека и kubectl без exec. Все сложные случаи упирались в нехватку доступа к состоянию базы.</p>
+  
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>Во всех пяти инцидентах, где причина зависела от конкурентного исполнения, не хватало доступа; в одном только его, в четырёх — доступа и рассуждения вместе. Ни один инцидент не упирался только в рассуждение. Все пять начались с ложного старта, расследование пропускной способности прошло через шесть опровергнутых гипотез. Каждая неверная догадка стоила цикла «задеплоить и наблюдать», а пайплайн занимал около двенадцати минут. Три инцидента без конкурентности решились имеющимися средствами.</dd><dt>Основание</dt><dd>27 сессий, около 410 часов и около 3 000 вызовов инструментов; транскрипты сверены с историей коммитов и деплоев. 22 коммита с исправлениями.</dd><dt>Ограничение</dt><dd>Восемь инцидентов в одной системе и без контрольной группы. Автор был и участником, и единственным кодировщиком. Около 79% вызовов пришлись на DeepSeek, гипотезы по моделям не размечены. Кодовую базу изначально написал AI-агент. Предложенные инструменты не реализованы и не проверены.</dd><dt>Для моей работы</dt><dd>Перед тем как давать агенту разбор инцидентов в БД, стоит дать ему read-only доступ к pg_locks и pg_stat_activity и полные отчёты о дедлоках. Это сокращает число циклов «гипотеза — деплой». Для повторных попыток в транзакции автор советует savepoint вместо полного rollback.</dd><dt>Следующий шаг</dt><dd>Сделать read-only эндпоинт или MCP-инструмент со снимком pg_locks и pg_stat_activity для дежурного агента и вести журнал опровергнутых гипотез.</dd></dl></details>
+  <div class="links"><a class="src" href="https://arxiv.org/abs/2611.17304" rel="noopener">arXiv</a></div>
+</article>
+  </div>
+</section>
+<section class="sec" id="s-guides" data-sec="guides">
+  <div class="wrap">
+    <div class="shead"><h2>Практические руководства</h2><span class="count">2</span></div>
+    
+<article class="card" id="github-agent-skills-guide" data-card-id="github-agent-skills-guide" data-section="guides" data-search="один skill.md для claude code, cursor и copilot build once, run on any agent: a practical guide to agent skills github, андреа гриффитс agents coding backend практическое руководство">
+  <h3><a href="https://github.blog/ai-and-ml/github-copilot/build-once-run-on-any-agent-a-practical-guide-to-agent-skills/" rel="noopener">Один SKILL.md для Claude Code, Cursor и Copilot</a></h3>
+  <p class="meta">GitHub, Андреа Гриффитс · 12 ноября 2026 · Практическое руководство</p>
+  <p class="orig" lang="en">Build once, run on any agent: a practical guide to agent skills</p>
+  <div class="tags"><span class="tag">agents</span><span class="tag">coding</span><span class="tag">backend</span></div>
+  <p class="lead-in">Командам приходится снова и снова объяснять агентам одни и те же задачи. GitHub показывает на двух демо-репозиториях, как держать навыки в skills/*/SKILL.md и собирать из них файлы для трёх клиентов одним скриптом. Отдельно описан проверяющий агент, который не видит самооценку пишущего.</p>
+  
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>Скрипт упаковки генерирует .claude-plugin/plugin.json для Claude Code, .cursor-plugin/plugin.json для Cursor и .github/agents/*.agent.md для Copilot; в CI запускается node scripts/package.mjs --check. Proof Agent получает исходный запрос и дифф без оценки coding-агента, возвращает PASS, FAIL или PARTIAL и обязан сослаться на изменённые файлы. В Data Forge forge-init записывает найденные параметры проекта в манифест, а forge-dbx остаётся единственным путём доступа к данным.</dd><dt>Основание</dt><dd>Публичные демо и описание процесса в семь фаз с ручным подтверждением на каждой и отдельным одобрением изменений схемы.</dd><dt>Ограничение</dt><dd>Измерений нет. Proof Agent только статически читает дифф, не запускает код и в демо работает в рекомендательном режиме. Демо — конвейер данных на Databricks и DuckDB, а одинаковость поведения в трёх клиентах не показана. Пост сам советует писать приложение, а не skill, если нужны стабильные интерфейсы, общее состояние и аудит.</dd><dt>Для моей работы</dt><dd>Для монорепозитория с несколькими агентами схема снимает расхождение копий инструкций. Независимый проверяющий агент, который не видит рассуждений автора, дёшево добавить в CI как необязательную проверку.</dd><dt>Следующий шаг</dt><dd>Свести дублирующиеся инструкции для разных агентов в один SKILL.md и добавить проверку сгенерированных файлов в CI.</dd></dl></details>
+  <div class="links"><a class="src" href="https://github.blog/ai-and-ml/github-copilot/build-once-run-on-any-agent-a-practical-guide-to-agent-skills/" rel="noopener">GitHub Blog</a></div>
+</article>
+<article class="card" id="hf-token-pooling" data-card-id="hf-token-pooling" data-section="guides" data-search="пулинг токенов в multi-vector поиске: индекс в 4 раза меньше token pooling for multi-vector retrieval (sentence transformers) hugging face, том аарсен rag cost руководство с экспериментом">
+  <h3><a href="https://huggingface.co/blog/token-pooling" rel="noopener">Пулинг токенов в multi-vector поиске: индекс в 4 раза меньше</a></h3>
+  <p class="meta">Hugging Face, Том Аарсен · 11 ноября 2026 · Руководство с экспериментом</p>
+  <p class="orig" lang="en">Token pooling for multi-vector retrieval (Sentence Transformers)</p>
+  <div class="tags"><span class="tag">RAG</span><span class="tag">cost</span></div>
+  <p class="lead-in">В поиске в стиле ColBERT хранится вектор на каждый токен документа, и индекс быстро растёт: 200 векторов по 128 измерений в 4 битах — 12,8 ГБ на миллион документов. Sentence Transformers добавил иерархический пулинг, который сливает похожие векторы, и функцию потерь, обучающую модель работать с пулингом.</p>
+  <figure class="fig"><div class="shot" style="max-width:676px" data-full="assets/token-pooling-results.png" data-lbmax="676" data-href="https://huggingface.co/blog/token-pooling"><img src="assets/token-pooling-results.png" width="1352" height="842" loading="lazy" alt="График из поста: среднее nDCG@10 на NanoBEIR в зависимости от числа хранимых векторов на документ. Модель, обученная с пулингом, обгоняет обычную при любом бюджете векторов."></div><div class="figbar"><button class="lbbtn" type="button" aria-label="Открыть изображение крупнее">⤢</button></div><figcaption>График из поста: среднее nDCG@10 на NanoBEIR в зависимости от числа хранимых векторов на документ. Модель, обученная с пулингом, обгоняет обычную при любом бюджете векторов. <a href="https://huggingface.co/blog/token-pooling">Источник</a></figcaption></figure>
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>При pool_factor=4 (в среднем 48,68 вектора на документ, на 74,8% меньше) nDCG@10 на NanoBEIR вырос с 49,03 у обычной модели до 51,23 у обученной с пулингом. Сохранение качества поднялось с 94,6% до 97,8%. Без пулинга обученная модель тоже лучше: 52,39 против 51,84. При адаптивном пороге и 29,58 вектора на документ сохраняется 97,3% против 93,3%.</dd><dt>Основание</dt><dd>Две модели на ModernBERT-base с проекцией в 128 измерений, по одной эпохе на одних и тех же 120 000 триплетах MS MARCO, сид 42; различается только функция потерь. Код, скрипты обучения и оценки и обе модели опубликованы.</dd><dt>Ограничение</dt><dd>Один сид и одна небольшая модель, без интервалов, поэтому прирост 0,5–2 пункта может быть частично шумом. Автор поддерживает библиотеку. Прямого сравнения с исходными методами (Learn to Pool, LightOn) нет. Пороги калибровали на тех же корпусах, на которых оценивали. Задержка запросов не измерена.</dd><dt>Для моей работы</dt><dd>Если в RAG уже используется late interaction, пулинг уменьшает индекс без переобучения, а дообучение вернёт часть качества. Для обычного поиска по одному вектору на документ рецепт неприменим.</dd><dt>Следующий шаг</dt><dd>Откалибровать distance_threshold на выборке своего корпуса и построить кривую «векторов на документ — nDCG» скриптом из поста.</dd></dl></details>
+  <div class="links"><a class="src" href="https://huggingface.co/blog/token-pooling" rel="noopener">Hugging Face Blog</a></div>
+</article>
+  </div>
+</section>
+<section class="sec" id="s-tools" data-sec="tools">
+  <div class="wrap">
+    <div class="shead"><h2>Инструменты и важные изменения</h2><span class="count">3</span></div>
+    
+<article class="card" id="allthingsdistributed-aws-emulator" data-card-id="allthingsdistributed-aws-emulator" data-section="tools" data-search="aws emulator: локальный aws, написанный агентами aws emulator and the engineer’s job when agents write the code вернер фогельс, aws agents coding backend инструмент и инженерный пост">
+  <h3><a href="https://www.allthingsdistributed.com/2026/11/aws-emulator-and-the-engineers-job-when-agents-write-the-code.html" rel="noopener">AWS Emulator: локальный AWS, написанный агентами</a></h3>
+  <p class="meta">Вернер Фогельс, AWS · 11 ноября 2026 · Инструмент и инженерный пост</p>
+  <p class="orig" lang="en">AWS Emulator and the engineer’s job when agents write the code</p>
+  <div class="tags"><span class="tag">agents</span><span class="tag">coding</span><span class="tag">backend</span></div>
+  <p class="lead-in">Coding-агенту нужна инфраструктура, которая ведёт себя как настоящий AWS, прямо в цикле «написал — запустил — прочитал». AWS выпустила эмулятор под лицензией CC0, который не требует аккаунта. Фогельс описывает и способ разработки: весь код эмулятора написали и проверили агенты, а оракулом служили тесты, сверенные с настоящим AWS.</p>
+  
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>Эмулятор собран из более чем 400 API-моделей и покрывает больше 200 сервисов AWS. Агенты писали end-to-end сценарии по публичным моделям Smithy, добивались их прохождения на настоящем AWS, а затем дописывали эмулятор, пока тот не проходил тот же тест. Каждое изменение проходило через merge gate: несколько агентов безопасности в режиме adversarial-ревью, общий ревьюер и детерминированные проверки.</dd><dt>Основание</dt><dd>Пост автора и README репозитория. Режим сервера (пакеты для Linux, Docker для macOS и Windows) или встраиваемый режим для Rust, HTTPS на 127.0.0.1:9297. Истории про SQS-эмулятор за 15 минут и переписывание движка репликации за два часа — единичные рассказы изнутри AWS.</dd><dt>Ограничение</dt><dd>В посте и README нет процентов совместимости: оценки выкладываются на странице релизов. Наличие API-модели не гарантирует верного поведения сервиса, в репозитории есть папка с известными проблемами. README запрещает использовать эмулятор для продакшен-нагрузки и тестирования безопасности. Телеметрия включена по умолчанию, PR в репозиторий не принимают.</dd><dt>Для моей работы</dt><dd>Go-сервис с AWS SDK можно направить на эмулятор в CI и в цикле агента вместо LocalStack или моков. Сам приём переносится и на внутренние сервисы: тест сначала проверяют на настоящей системе, а потом используют как оракул для заглушки.</dd><dt>Следующий шаг</dt><dd>Запустить интеграционные тесты одного сервиса с S3 и SQS против эмулятора и сравнить, что не совпадает с настоящим AWS.</dd></dl></details>
+  <div class="links"><a class="src" href="https://www.allthingsdistributed.com/2026/11/aws-emulator-and-the-engineers-job-when-agents-write-the-code.html" rel="noopener">All Things Distributed</a><a class="src" href="https://github.com/aws/aws-emulator" rel="noopener">GitHub</a><a class="src" href="https://news.ycombinator.com/item?id=50456740" rel="noopener">Обсуждение на HN</a></div>
+</article>
+<article class="card" id="anthropic-fable-5-2" data-card-id="anthropic-fable-5-2" data-section="tools" data-search="claude fable 5.2: цены, режимы и что поменялось в api introducing claude fable 5.2 and claude mythos 5.2 anthropic coding agents cost релиз модели">
+  <h3><a href="https://www.anthropic.com/claude-fable-and-mythos-5-2" rel="noopener">Claude Fable 5.2: цены, режимы и что поменялось в API</a></h3>
+  <p class="meta">Anthropic · 9 ноября 2026 · Релиз модели</p>
+  <p class="orig" lang="en">Introducing Claude Fable 5.2 and Claude Mythos 5.2</p>
+  <div class="tags"><span class="tag">coding</span><span class="tag">agents</span><span class="tag">cost</span></div>
+  <p class="lead-in">Anthropic открыла Claude Fable 5.2 всем пользователям как claude-fable-5-2 на своей платформе, в AWS, Google Cloud и Azure. Mythos 5.2 — та же модель без защит в областях кибербезопасности и биологии, доступ к ней через программу верификации. Для интеграций важно, что preserved thinking теперь включён для всех аккаунтов.</p>
+  
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>Цена — $8 за миллион входных и $40 за миллион выходных токенов. Быстрый режим генерирует до 2,5 раза быстрее и стоит $16 и $80. По данным Anthropic, на FrontierCode 2.0 Fable 5.2 при уровне рассуждения High держится наравне с Opus 5.5 при Max примерно за половину стоимости задачи. Блокировки классификатором безопасности, по ранним тестам, снизились примерно на 55% относительно 5.1.</dd><dt>Основание</dt><dd>Таблица бенчмарков вендора: FrontierCode 2.0 — 49,1% при Xhigh против 45,5% у Opus 5.5, 42,8% у GPT-6 Astra и 41,1% у Gemini 4 Carbon. На AutomationBench впереди Gemini: 53,9% против 51,4%.</dd><dt>Ограничение</dt><dd>Все цифры измерены Anthropic, уровни рассуждения у моделей в таблице разные, часть бенчмарков новые или внутренние. Оценка «вдвое дешевле» — из ранних тестов. Fable блокирует большинство задач кибербезопасности и передаёт их Opus 4.8. Данные хранятся 30 дней, если нет zero data retention. Для большинства задач по коду Anthropic по-прежнему рекомендует Opus 5.5.</dd><dt>Для моей работы</dt><dd>Перед переключением агентов стоит проверить обработку preserved thinking в своём клиенте и прогнать собственный eval со сравнением стоимости задачи: Fable High против Opus Max.</dd><dt>Следующий шаг</dt><dd>Прогнать 30 задач своего eval на Fable 5.2 High и Opus 5.5 Max и сравнить долю решённых задач и стоимость в долларах.</dd></dl></details>
+  <div class="links"><a class="src" href="https://www.anthropic.com/claude-fable-and-mythos-5-2" rel="noopener">Anthropic</a><a class="src" href="https://news.ycombinator.com/item?id=50429068" rel="noopener">Обсуждение на HN</a></div>
+</article>
+<article class="card" id="vercel-workflow-sdk-5" data-card-id="vercel-workflow-sdk-5" data-section="tools" data-search="workflow sdk 5: шифрование, регионы и меньше накладных расходов workflow sdk 5 vercel agents backend security релиз инструмента">
+  <h3><a href="https://vercel.com/blog/workflow-sdk-5" rel="noopener">Workflow SDK 5: шифрование, регионы и меньше накладных расходов</a></h3>
+  <p class="meta">Vercel · 12 ноября 2026 · Релиз инструмента</p>
+  <p class="orig" lang="en">Workflow SDK 5</p>
+  <div class="tags"><span class="tag">agents</span><span class="tag">backend</span><span class="tag">security</span></div>
+  <p class="lead-in">Workflow SDK превращает асинхронную функцию на TypeScript в устойчивый процесс: аргументы и результаты шагов пишутся в журнал событий и при перезапуске проигрываются, поэтому запуск переживает падения, деплои и долгие паузы. В пятой версии появилось сквозное шифрование данных запуска, выбор региона и заметно меньшие задержки между шагами.</p>
+  
+  <details><summary>Подробнее: результат, основание, ограничения</summary><dl><dt>Что показали</dt><dd>Vercel сравнила v5.2.0 с v4.8.12: p75 первого шага — 418 → 172 мс, между шагами — 618 → 109 мс. Накладные расходы в конце запуска на 1 020 шагов — 1 748 → 70 мс, медиана всего запуска — 21,0 → 3,0 минуты. Данные шифруются AES-256-GCM с отдельным ключом на запуск, experimental_retention: 0 удаляет их сразу после завершения, start(..., { region: &quot;fra1&quot; }) задаёт домашний регион.</dd><dt>Основание</dt><dd>Замер вендора 8 октября 2026 в регионе iad1 на управляемом Vercel World, 1 КБ JSON на шаг. По словам Vercel, через SDK прошло больше 4 млрд шагов и 700 млн запусков.</dd><dt>Ограничение</dt><dd>Одна нагрузка, один регион, только сравнение старой и новой версий. Гарантии исполнения (exactly-once или at-least-once, идемпотентность шагов) в посте не описаны, лимиты и цены не указаны. Атрибуты запуска хранятся открытым текстом. Состояние запуска привязано к домашнему региону. SDK только для TypeScript, Python в бете, Go нет.</dd><dt>Для моей работы</dt><dd>Для Go-команды это ориентир, какие возможности ждать от движка устойчивых workflow для агентов: шифрование на запуск, удаление данных после завершения, домашний регион. Те же вопросы стоит задать Temporal или своему решению.</dd><dt>Следующий шаг</dt><dd>Проверить, как ваш движок workflow хранит входы и выходы шагов агента и можно ли удалить их сразу после завершения запуска.</dd></dl></details>
+  <div class="links"><a class="src" href="https://vercel.com/blog/workflow-sdk-5" rel="noopener">Vercel</a></div>
+</article>
+  </div>
+</section>
+<section class="sec" id="plan"><div class="wrap"><div class="shead"><h2>План на следующую неделю</h2></div>
+<ol class="plan"><li><b>Аудит AGENTS.md.</b> Выписать правила, которые проверяются по диффу, перенести их в hooks и CI и через неделю посмотреть, какие агент нарушает (карточки про AGENTS.md и SatisFix).</li><li><b>Граница записи в eval.</b> Логировать фактические записи агента в БД и рядом с LLM-судьёй добавить детерминированную проверку неожиданных записей (карточки про LLM-судью и DeputyBench).</li><li><b>Тесты шлюза моделей.</b> Прогнать через свой LLM-шлюз запрос с ошибкой инструмента и системной вставкой посреди диалога и сравнить payload до и после перевода (карточка про трансляторы API).</li></ol></div></section>
+</main>
+<footer>AI Engineering Digest, выпуск за 9–15 ноября 2026 (Europe/Moscow). Ссылки ведут на первоисточники; цифры в карточках взяты из них, а предложения в блоках «Для моей работы» и «Следующий шаг» — редакционные.</footer>
+<div id="lb" role="dialog" aria-label="Изображение"><button class="close" type="button" aria-label="Закрыть">×</button><div class="lbinner"><img alt=""></div><a class="lbsrc" href="#" rel="noopener">Источник</a></div>
+<script>
+(function(){
+  var cards=[].slice.call(document.querySelectorAll('article[data-card-id]'));
+  var sections=[].slice.call(document.querySelectorAll('section.sec'));
+  var q=document.getElementById('q'), found=document.getElementById('found'), empty=document.getElementById('empty');
+  var cur='all';
+  function apply(){
+    var term=(q.value||'').trim().toLowerCase(), n=0;
+    cards.forEach(function(c){
+      var ok=(cur==='all'||c.dataset.section===cur)&&(!term||c.dataset.search.indexOf(term)>=0);
+      c.classList.toggle('hidden',!ok); if(ok)n++;
+    });
+    sections.forEach(function(s){s.classList.toggle('hidden',!s.querySelector('article:not(.hidden)'));});
+    found.textContent='Найдено: '+n+' из '+cards.length;
+    empty.style.display=n?'none':'block';
+  }
+  [].forEach.call(document.querySelectorAll('.flt'),function(b){b.addEventListener('click',function(){
+    cur=b.dataset.f; [].forEach.call(document.querySelectorAll('.flt'),function(x){x.classList.toggle('on',x===b);}); apply();});});
+  q.addEventListener('input',apply);
+  document.getElementById('reset').addEventListener('click',function(){q.value='';cur='all';
+    [].forEach.call(document.querySelectorAll('.flt'),function(x){x.classList.toggle('on',x.dataset.f==='all');});apply();});
+  var lb=document.getElementById('lb'), lbimg=lb.querySelector('img'), inner=lb.querySelector('.lbinner'), lbsrc=lb.querySelector('.lbsrc');
+  function open(shot){lbimg.src=shot.dataset.full; inner.style.maxWidth=shot.dataset.lbmax+'px'; lbsrc.href=shot.dataset.href; lb.classList.add('open');}
+  [].forEach.call(document.querySelectorAll('.fig'),function(f){var s=f.querySelector('.shot');s.addEventListener('click',function(){open(s);});f.querySelector('.lbbtn').addEventListener('click',function(){open(s);});});
+  lb.querySelector('.close').addEventListener('click',function(){lb.classList.remove('open');});
+  lb.addEventListener('click',function(e){if(e.target===lb)lb.classList.remove('open');});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')lb.classList.remove('open');});
+  apply();
+})();
+</script>
+</body>
+</html>
